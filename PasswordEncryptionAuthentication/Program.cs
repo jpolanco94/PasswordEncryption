@@ -56,8 +56,13 @@ namespace PasswordEncryptionAuthentication
                 Console.WriteLine("Username / Password invalid.");
             }
             if (userInput == "3")
-            {                
-                Console.WriteLine("Any saved usernames or passwords will be lost");
+            {
+                Console.WriteLine("\nHere is a list of all the users");
+                for (int i = 0; i < userList.Count; i++)
+                {
+                    Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
+                }
+                Console.WriteLine("\nErasing all user accounts.");
                 Console.WriteLine("See you later alligator");
                 return;
                 // Wait some time then close application
@@ -72,8 +77,6 @@ namespace PasswordEncryptionAuthentication
                 {
                     Console.WriteLine("Access Granted.");
                     AdminInterface();
-
-                    
                 }
             }
             if (userInput != "1" && userInput !="2" && userInput !="3" && userInput != "Access_Admin_Controls")

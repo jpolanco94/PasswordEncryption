@@ -44,7 +44,7 @@ namespace Users
             }
         }
 
-        string Encrypt(string password)
+        public static string Encrypt(string password)
         {
             MD5 md5hash = MD5.Create();
             string encrypted = GetMd5Hash(md5hash, password);
@@ -75,7 +75,7 @@ namespace Users
 
         //got this from https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.md5?view=netframework-4.8
         // Verify a hash against a string.
-        static bool VerifyMd5Hash(MD5 md5Hash, string input, string hash)
+        public static bool VerifyMd5Hash(MD5 md5Hash, string input, string hash)
         {
             // Hash the input.
             string hashOfInput = GetMd5Hash(md5Hash, input);

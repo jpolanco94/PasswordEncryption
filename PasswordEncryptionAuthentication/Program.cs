@@ -4,9 +4,11 @@ namespace PasswordEncryptionAuthentication
 {
     public class UserList
     {
-        Dictionary<Encryt(userPassword), username> = new Dictionary<>();
-        public string Encrypt
+        public string _password;
+        public string _username;
+        
     }
+
     class Program
     {   
         
@@ -31,6 +33,7 @@ namespace PasswordEncryptionAuthentication
             }
             if (userInput == 3)
             {
+                //Print all usernames, passwords, and encrypted passwords
                 Console.WriteLine("Any saved usernames or passwords will be lost");
                 Console.WriteLine("See you later alligator");
                 // Wait some time then close application

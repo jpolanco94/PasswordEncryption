@@ -20,25 +20,25 @@ namespace PasswordEncryptionAuthentication
             Console.WriteLine("2. Authenticate a user");
             Console.WriteLine("3. Exit the system\n");
             Console.Write("Enter Selection:  ");
-            int userInput = int.Parse(Console.ReadLine());
-            if (userInput == 1)
+            string userInput = Console.ReadLine();
+            if (userInput == "1")
             {
                 //Do establish an account method
                 UserInterface();
             }
-            if (userInput == 2)
+            if (userInput == "2")
             {
                 //Do authenticate a user method
                 UserInterface();
             }
-            if (userInput == 3)
+            if (userInput == "3")
             {
                 //Print all usernames, passwords, and encrypted passwords
                 Console.WriteLine("Any saved usernames or passwords will be lost");
                 Console.WriteLine("See you later alligator");
                 // Wait some time then close application
             }
-            if (userInput != 1 && userInput !=2 && userInput !=3)
+            if (userInput != "1" && userInput !="2" && userInput !="3")
             {
                 Console.WriteLine("\nOnly 1, 2, and 3 are correct inputs. Please select on of those numbers.\n");
                 UserInterface();

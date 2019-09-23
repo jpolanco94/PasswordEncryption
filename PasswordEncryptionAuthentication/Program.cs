@@ -23,8 +23,7 @@ namespace PasswordEncryptionAuthentication
             Console.WriteLine("\n-----------------------------------------------------------------");
             
             if (userInput == "1")
-            {
-                //Do establish an account method
+            {                
                 Console.Write("Enter a desired user name: ");
                 string userName = Console.ReadLine();
                 if (!userList.Contains(userName))
@@ -57,8 +56,7 @@ namespace PasswordEncryptionAuthentication
                 Console.WriteLine("Username / Password invalid.");
             }
             if (userInput == "3")
-            {
-                //Print all usernames, passwords, and encrypted passwords
+            {                
                 Console.WriteLine("Any saved usernames or passwords will be lost");
                 Console.WriteLine("See you later alligator");
                 return;
@@ -73,21 +71,71 @@ namespace PasswordEncryptionAuthentication
                 if (UserList.Encrypt(checkPassword) == u["Admin"])
                 {
                     Console.WriteLine("Access Granted.");
+                    AdminInterface();
 
-                    Console.WriteLine("\nHere is a list of all the users");
-                    for (int i = 0; i < userList.Count; i++)
-                    {
-                        Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
-                    }
+                    
                 }
             }
             if (userInput != "1" && userInput !="2" && userInput !="3" && userInput != "Access_Admin_Controls")
             {
-                Console.WriteLine("\nOnly 1, 2, and 3 are correct inputs. Please select on of those numbers.\n");
+                Console.WriteLine("\nOnly 1, 2, and 3 are correct inputs. Please select one of those numbers.\n");
             }
             Console.WriteLine("\nPress any key to continue.");
             Console.ReadKey();
             UserInterface();
+        }
+        public static void AdminInterface()
+        {
+            Console.Clear();
+            Console.WriteLine("-----------------------------------------------------------------\n");
+            Console.WriteLine("\t  ADMIN CONTROLS SYSTEM\n");
+            Console.WriteLine("\t  Please select one option");
+            Console.WriteLine("\t  1. See users and passwords");
+            Console.WriteLine("\t  2. Update admin password");
+            Console.WriteLine("\t  3. Delete user account");
+            Console.WriteLine("\t  4. Exit the system\n");
+            Console.Write("\t  Enter Selection:  ");
+            string userInput = Console.ReadLine();
+            Console.WriteLine("\n-----------------------------------------------------------------");
+
+            if (userInput == "1")
+            {
+                Console.WriteLine("\nHere is a list of all the users");
+                for (int i = 0; i < userList.Count; i++)
+                {
+                    Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
+                }
+            }
+            if (userInput == "2")
+            {
+                //Only uses while running
+                Console.Write("Enter new password: ");
+                u["Admin"] = Console.ReadLine();
+            }
+            if (userInput == "3")
+            {
+                for (int i = 0; i < userList.Count; i++)
+                {
+                    Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
+                }
+                Console.Write("\nWhich user do you want to remove?: ");
+                string userName = Console.ReadLine();
+                u.DeleteUser(userName);
+                userList.Remove(userName);
+            }
+            if (userInput == "4")
+            {
+                Console.WriteLine("Bye bye!");
+                return;
+            }
+            if (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4")
+            {
+                Console.WriteLine("\nOnly 1, 2, 3, and 4 are correct inputs. Please select one of those numbers.\n");
+            }
+
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey();
+            AdminInterface();
         }
         static void Main(string[] args)
         {

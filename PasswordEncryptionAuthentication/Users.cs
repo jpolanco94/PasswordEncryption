@@ -33,13 +33,7 @@ namespace Users
             }
             set
             {
-                for (int i = 0; i < userList.Count; i++)
-                {
-                    if (userList[i].Username == username)
-                    {
-                        userList.RemoveAt(i);
-                    }
-                }
+                DeleteUser(username);
                 userList.Add(new User(username, Encrypt(value)));
             }
         }
@@ -73,23 +67,14 @@ namespace Users
             return sBuilder.ToString();
         }
 
-        //got this from https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.md5?view=netframework-4.8
-        // Verify a hash against a string.
-        public static bool VerifyMd5Hash(MD5 md5Hash, string input, string hash)
+        public void DeleteUser(string user)
         {
-            // Hash the input.
-            string hashOfInput = GetMd5Hash(md5Hash, input);
-
-            // Create a StringComparer an compare the hashes.
-            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-
-            if (0 == comparer.Compare(hashOfInput, hash))
+            for (int i = 0; i < userList.Count; i++)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                if (userList[i].Username == user)
+                {
+                    userList.RemoveAt(i);
+                }
             }
         }
     }

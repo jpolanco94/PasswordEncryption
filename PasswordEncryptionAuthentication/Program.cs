@@ -8,16 +8,20 @@ namespace PasswordEncryptionAuthentication
     {
         static List<string> userList = new List<string>();
         static UserList u = new UserList();
+
         public static void UserInterface()
         {
             Console.Clear();
-            Console.WriteLine("PASSWORD AUTHENTICATION SYSTEM\n");
-            Console.WriteLine("Please select one option");
-            Console.WriteLine("1. Establish an account");
-            Console.WriteLine("2. Authenticate a user");
-            Console.WriteLine("3. Exit the system\n");
-            Console.Write("Enter Selection:  ");
+            Console.WriteLine("-----------------------------------------------------------------\n");
+            Console.WriteLine("\t  PASSWORD AUTHENTICATION SYSTEM\n");
+            Console.WriteLine("\t  Please select one option");
+            Console.WriteLine("\t  1. Establish an account");
+            Console.WriteLine("\t  2. Authenticate a user");
+            Console.WriteLine("\t  3. Exit the system\n");
+            Console.Write("\t  Enter Selection:  ");
             string userInput = Console.ReadLine();
+            Console.WriteLine("\n-----------------------------------------------------------------");
+            
             if (userInput == "1")
             {
                 //Do establish an account method
@@ -44,9 +48,10 @@ namespace PasswordEncryptionAuthentication
 
                 if (UserList.Encrypt(userPassword) == u[userName])
                 {
-                    Console.WriteLine($"User name = {userName}");
-                    Console.WriteLine($"Password = {userPassword}");
-                    Console.WriteLine($"Encrypted Password = {u[userName]}");
+                    Console.WriteLine($"User {userName} has been authenticated");
+                    Console.WriteLine($"  User name = {userName}");
+                    Console.WriteLine($"  Password = {userPassword}");
+                    Console.WriteLine($"  Encrypted Password = {u[userName]}");
                 }
                 else
                 Console.WriteLine("Username / Password invalid.");
@@ -59,11 +64,28 @@ namespace PasswordEncryptionAuthentication
                 return;
                 // Wait some time then close application
             }
-            if (userInput != "1" && userInput !="2" && userInput !="3")
+            if(userInput == "Access_Admin_Controls")
+            {
+                u["Admin"] = "qwerty123456";
+                Console.Write("Enter the password: ");
+                string checkPassword = Console.ReadLine();
+
+                if (UserList.Encrypt(checkPassword) == u["Admin"])
+                {
+                    Console.WriteLine("Access Granted.");
+
+                    Console.WriteLine("\nHere is a list of all the users");
+                    for (int i = 0; i < userList.Count; i++)
+                    {
+                        Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
+                    }
+                }
+            }
+            if (userInput != "1" && userInput !="2" && userInput !="3" && userInput != "Access_Admin_Controls")
             {
                 Console.WriteLine("\nOnly 1, 2, and 3 are correct inputs. Please select on of those numbers.\n");
             }
-
+            Console.WriteLine("\nPress any key to continue.");
             Console.ReadKey();
             UserInterface();
         }

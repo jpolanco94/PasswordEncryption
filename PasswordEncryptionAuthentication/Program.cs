@@ -11,81 +11,86 @@ namespace PasswordEncryptionAuthentication
 
         public static void UserInterface()
         {
-            Console.Clear();
-            Console.WriteLine("-----------------------------------------------------------------\n");
-            Console.WriteLine("\t  PASSWORD AUTHENTICATION SYSTEM\n");
-            Console.WriteLine("\t  Please select one option");
-            Console.WriteLine("\t  1. Establish an account");
-            Console.WriteLine("\t  2. Authenticate a user");
-            Console.WriteLine("\t  3. Exit the system\n");
-            Console.Write("\t  Enter Selection:  ");
-            string userInput = Console.ReadLine();
-            Console.WriteLine("\n-----------------------------------------------------------------");
-            
-            if (userInput == "1")
-            {                
-                Console.Write("Enter a desired user name: ");
-                string userName = Console.ReadLine();
-                if (!userList.Contains(userName))
+            using (var db = new GroupAssignmentContext())
+            {
+                Console.Clear();
+                Console.WriteLine("-----------------------------------------------------------------\n");
+                Console.WriteLine("\t  PASSWORD AUTHENTICATION SYSTEM\n");
+                Console.WriteLine("\t  Please select one option");
+                Console.WriteLine("\t  1. Establish an account");
+                Console.WriteLine("\t  2. Authenticate a user");
+                Console.WriteLine("\t  3. Exit the system\n");
+                Console.Write("\t  Enter Selection:  ");
+                string userInput = Console.ReadLine();
+                Console.WriteLine("\n-----------------------------------------------------------------");
+
+                if (userInput == "1")
                 {
-                    userList.Add(userName);
+                    Console.Write("Enter a desired user name: ");
+                    string userName = Console.ReadLine();
                     Console.Write("Enter a desired password: ");
                     string userPassword = Console.ReadLine();
-                    u[userName] = userPassword;
+                    if (!userList.Contains(userName))
+                    {
+                        userList.Add(userName);
+                        u[userName] = userPassword;
+                        db.Users.Add(new Users { UserName = userName, Password = UserList.Encrypt(u[userName]) });
+                        var count = db.SaveChanges();
+                    }
+                    else
+                    {
+                        Console.WriteLine("This username is unavailable");
+                    }
                 }
-                else
+                if (userInput == "2")
                 {
-                    Console.WriteLine("This username is unavailable");
-                }
-            }
-            if (userInput == "2")
-            {
-                Console.Write("Enter your user name: ");
-                string userName = Console.ReadLine();
-                Console.Write("Enter the password: ");
-                string userPassword = Console.ReadLine();
+                    Console.Write("Enter your user name: ");
+                    string userName = Console.ReadLine();
+                    Console.Write("Enter the password: ");
+                    string userPassword = Console.ReadLine();
 
-                if (UserList.Encrypt(userPassword) == u[userName])
-                {
-                    Console.WriteLine($"User {userName} has been authenticated");
-                    Console.WriteLine($"  User name = {userName}");
-                    Console.WriteLine($"  Password = {userPassword}");
-                    Console.WriteLine($"  Encrypted Password = {u[userName]}");
+                    if (UserList.Encrypt(userPassword) == u[userName])
+                    {
+                        Console.WriteLine($"User {userName} has been authenticated");
+                        Console.WriteLine($"  User name = {userName}");
+                        Console.WriteLine($"  Password = {userPassword}");
+                        Console.WriteLine($"  Encrypted Password = {u[userName]}");
+                    }
+                    else
+                        Console.WriteLine("Username / Password invalid.");
                 }
-                else
-                Console.WriteLine("Username / Password invalid.");
-            }
-            if (userInput == "3")
-            {
-                Console.WriteLine("\nHere is a list of all the users");
-                for (int i = 0; i < userList.Count; i++)
+                if (userInput == "3")
                 {
-                    Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
+                    Console.WriteLine("\nHere is a list of all the users");
+                    for (int i = 0; i < userList.Count; i++)
+                    {
+                        Console.WriteLine($"  [{userList[i]}, {u[userList[i]]}]");
+                    }
+                    Console.WriteLine("\nErasing all user accounts.");
+                    Console.WriteLine("See you later alligator");
+                    return;
+                    // Wait some time then close application
                 }
-                Console.WriteLine("\nErasing all user accounts.");
-                Console.WriteLine("See you later alligator");
-                return;
-                // Wait some time then close application
-            }
-            if(userInput == "Access_Admin_Controls")
-            {
-                u["Admin"] = "qwerty123456";
-                Console.Write("Enter the password: ");
-                string checkPassword = Console.ReadLine();
+                if (userInput == "Access_Admin_Controls")
+                {
+                    u["Admin"] = UserList.Encrypt("qwerty123456");
+                    Console.Write("Enter the password: ");
+                    string checkPassword = Console.ReadLine();
 
-                if (UserList.Encrypt(checkPassword) == u["Admin"])
-                {
-                    Console.WriteLine("Access Granted.");
-                    AdminInterface();
+                    if (UserList.Encrypt(checkPassword) == u["Admin"])
+                    {
+                        Console.WriteLine("Access Granted.");
+                        AdminInterface();
+                    }
                 }
+                if (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "Access_Admin_Controls")
+                {
+                    Console.WriteLine("\nOnly 1, 2, and 3 are correct inputs. Please select one of those numbers.\n");
+                }
+                Console.WriteLine("\nPress any key to continue.");
+                Console.ReadKey();
+                UserInterface();
             }
-            if (userInput != "1" && userInput !="2" && userInput !="3" && userInput != "Access_Admin_Controls")
-            {
-                Console.WriteLine("\nOnly 1, 2, and 3 are correct inputs. Please select one of those numbers.\n");
-            }
-            Console.WriteLine("\nPress any key to continue.");
-            Console.ReadKey();
-            UserInterface();
         }
         public static void AdminInterface()
         {
@@ -140,8 +145,24 @@ namespace PasswordEncryptionAuthentication
             Console.ReadKey();
             AdminInterface();
         }
+        //opens a file, reads stuff in it to -- static List<string> userList = new List<string>();
+        void OpenFile()
+        { }
+
+        //closes a file, writes stuff in static List<string> userList = new List<string>(); to the file
+        void CloseFile()
+        { }
         static void Main(string[] args)
         {
+
+            using (var db = new GroupAssignmentContext())
+            {
+                foreach (var user in db.Users)
+                {
+                    userList.Add(user.UserName);
+                    u[user.UserName] = user.Password;
+                }
+            }
             UserInterface();
         }
     }

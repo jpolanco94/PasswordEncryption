@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
 
+namespace PasswordEncryptionAuthentication
+{
+    public partial class Users
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+}
+
 namespace Users
 {
     public struct User
@@ -34,7 +44,7 @@ namespace Users
             set
             {
                 DeleteUser(username);
-                userList.Add(new User(username, Encrypt(value)));
+                userList.Add(new User(username, value));
             }
         }
 

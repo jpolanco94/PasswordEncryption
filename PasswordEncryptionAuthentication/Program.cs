@@ -28,13 +28,26 @@ namespace PasswordEncryptionAuthentication
                 {
                     Console.Write("Enter a desired user name: ");
                     string userName = Console.ReadLine();
-                    Console.Write("Enter a desired password: ");
-                    string userPassword = Console.ReadLine();
+                    
                     if (!userList.Contains(userName))
                     {
+                        string userPassword = "";
+                        Console.Write("Enter a desired password: ");
+                        bool flag = true;
+
+                        while (flag)
+                        {
+                            char c = Console.ReadKey(true).KeyChar;
+                            if (c == '\r')
+                            {
+                                flag = false;
+                            }
+                            else
+                                userPassword += c.ToString();
+                        }
                         userList.Add(userName);
-                        u[userName] = userPassword;
-                        db.Users.Add(new Users { UserName = userName, Password = UserList.Encrypt(u[userName]) });
+                        u[userName] = UserList.Encrypt(userPassword);
+                        db.Users.Add(new Users { UserName = userName, Password = u[userName] });
                         var count = db.SaveChanges();
                     }
                     else
